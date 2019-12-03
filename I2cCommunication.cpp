@@ -8,82 +8,95 @@
  * @copyright Copyright (c) 2019
  * 
  */
-#include "I2cCommunicationSlave.h"
+#include "I2cCommunication.h"
 
 
-I2cCommunicationSlave::I2cCommunicationSlave() 
+I2cCommunication::I2cCommunication() 
 {
     #ifdef MASTER
     Wire.begin();
     #else
-    Wire.begin(I2C_SLAVE_ADDRESS_ESP);
+    Wire.begin(I2CSLAVEADDRESSESP);
     Wire.onRequest(i2cRequestCallback);
     Wire.onReceive(i2cReadCallback);
     #endif
 }
 
-String I2cCommunicationSlave::getReceivedEvent()
+/*
+String I2cCommunication::getReceivedEvent()
 {
-    DBFUNCCALLln("I2cCommunicationSlave::getReceivedEvent()");
+    DBFUNCCALLln("I2cCommunication::getReceivedEvent()");
     return (pReceivedMessage.event);
 }
 
-bool I2cCommunicationSlave::getReadFlag_I2c()
+bool I2cCommunication::getReadFlag_I2c()
 {
-    DBFUNCCALLln("I2cCommunicationSlave::getReadFlag_I2c()");
+    DBFUNCCALLln("I2cCommunication::getReadFlag_I2c()");
     return READFLAG_I2C;
 }
 
-void I2cCommunicationSlave::setWriteEvent(String s)
+void I2cCommunication::setWriteEvent(String s)
 {
-    DBFUNCCALLln("I2cCommunicationSlave::setWriteEvent()");
+    DBFUNCCALLln("I2cCommunication::setWriteEvent()");
     (pWriteMessage.event) = s;
 }
 
-void I2cCommunicationSlave::setReadFlag_I2c(bool flag)
+void I2cCommunication::setReadFlag_I2c(bool flag)
 {
     DBFUNCCALLln("setReadFlag_I2c");
     READFLAG_I2C = flag;
 }
+*/
 
 #ifdef MASTER
-void I2cCommunicationSlave::i2cWriteMessage()
+void I2cCommunication::writeMessage(WriteI2cMessage &message)
 {
-
+    Wire.beginTransmission(I2CSLAVEADDRESP);
+    Wire.write((uint8_t *) &message, (size_t)sizeof(message));
+    Wire.endTransmission();
+    delay(50);
 }
 
-void I2cCommunicationSlave::i2cReadMessage()
+ReceivedI2cMessage I2cCommunication::readMessage()
 {
-
+    Wire.requestFrom(I2CSLAVEADDRESP, sizeof(ReceivedI2cMessage));
+    while(Wire.available() < sizeof(ReceivedI2cMessage))
+    {
+        delay(5);
+    }
+    ReceivedI2cMessage tempMessage;
+    Wire.readBytes((char *) &tempMessage, sizeof(tempMessage));
+    return tempMessage;
 }
 
-String I2cCommunicationSlave::getReceivedState()
+/*
+String I2cCommunication::getReceivedState()
 {
-    DBFUNCCALLln("I2cCommunicationSlave::getReceivedState()");
+    DBFUNCCALLln("I2cCommunication::getReceivedState()");
     return (pReceivedMessage.state);
 }
 
-String I2cCommunicationSlave::getReceivedPosition()
+String I2cCommunication::getReceivedPosition()
 {
-    DBFUNCCALLln("I2cCommunicationSlave::getReceivedPosition()");
+    DBFUNCCALLln("I2cCommunication::getReceivedPosition()");
     return (pReceivedMessage.position);
 }
 
-Package I2cCommunicationSlave::getReceivedPackageInformation()
+Package I2cCommunication::getReceivedPackageInformation()
 {
-    DBFUNCCALLln("I2cCommunicationSlave::getReceivedPackageInformation()");
+    DBFUNCCALLln("I2cCommunication::getReceivedPackageInformation()");
     return (pReceivedMessage.packageInformation);
 }
 
-void I2cCommunicationSlave::setWriteInformation(String s)
+void I2cCommunication::setWriteInformation(String s)
 {
-    DBFUNCCALLln("I2cCommunicationSlave::setWriteInformation");
+    DBFUNCCALLln("I2cCommunication::setWriteInformation");
     (pWriteMessage.information) = s;
 }
-
+*/
 #else
 
-void I2cCommunicationSlave::i2cReadCallback(int bytes)
+void I2cCommunication::ReadCallback(int bytes)
 {
     DBFUNCCALLln("receiveEvent()");
     READFLAG_I2C = true;
@@ -92,36 +105,34 @@ void I2cCommunicationSlave::i2cReadCallback(int bytes)
     {
         Wire.readBytes( (char*) &pReceivedMessage, sizeof(ReceivedI2cMessage));
     }
-    
 }
 
-void I2cCommunicationSlave::i2cRequestCallback()
+void I2cCommunication::RequestCallback()
 {
-    DBFUNCCALLln("I2cCommunicationSlave::i2cRequestCallback()");
-    Wire.write( (char*) &pWriteMessage);
+    DBFUNCCALLln("I2cCommunication::i2cRequestCallback()");
+    Wire.write((char*) &pWriteMessage, sizeof(WriteI2cMessage);
 }
-
 #endif
 
-void I2cCommunicationSlave::resetReceivedMessages()
+void I2cCommunication::resetReceivedMessages()
 {
-    DBFUNCCALLln("I2cCommunicationSlave::resetMessages()");
-    pReceivedMessage.event = "null";
+    DBFUNCCALLln("I2cCommunication::resetMessages()");
+    pReceivedI2cMessage[0].event = "null";
     #ifdef MASTER
-    pReceivedMessage.information = "null";
+    pReceivedI2cMessage[0].state = "null";
+    pReceivedI2cMessage[0].position = -1;
+    pReceivedI2cMessage[0].packageId = 0;
+    pReceivedI2cMessage[0].cargo = "null";
+    pReceivedI2cMessage[0].targetDest = "null";
     #else
-    pReceivedMessage.state = "null";
-    pReceivedMessage.position = "null";
-    pReceivedMessage.packageInformation.id = "null";
-    pReceivedMessage.packageInformation.cargo = "null";
-    pReceivedMessage.packageInformation.targetDest = "null";
-    pReceivedMessage.packageInformation.targetReg = "null";
+    pReceivedI2cMessage[0].information = "null";
     #endif
 }
 
-void I2cCommunicationSlave::resetWriteMessages()
+/*
+void I2cCommunication::resetWriteMessages()
 {
-    DBFUNCCALLln("I2cCommunicationSlave::resetWriteMessages()");
+    DBFUNCCALLln("I2cCommunication::resetWriteMessages()");
     pWriteMessage.event = "null";
     #ifdef MASTER
     pReceivedMessage.state = "null";
@@ -134,3 +145,4 @@ void I2cCommunicationSlave::resetWriteMessages()
     pWriteMessage.information = "null";
     #endif
 }
+*/

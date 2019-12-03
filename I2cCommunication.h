@@ -15,9 +15,12 @@
 #include <Wire.h>
 
 // own files:
-#include "MainConfiguration.h"
 #include "LogConfiguration.h"
-#include "Messages.h"
+#include "MainConfiguration.h"
+#include "Message.h"
+
+#define MASTER
+
 
 /**
  * @brief Class to communicate with I2c
@@ -26,56 +29,6 @@
 class I2cCommunication
 {
     public:
-    #ifdef MASTER
-
-    /**
-     * @brief Received I2c message struct to store message for master
-     * 
-     */
-    struct ReceivedI2cMessage
-    {
-        static String event;
-        static struct Package packageInformation;
-        static String state;
-        static String position;
-    };
-
-    /**
-     * @brief Write I2c message struct to store answer message for master
-     * 
-     */
-    struct WriteI2cMessage
-    {
-        static String event;
-        static String information;
-    };
-
-    
-    #else
-
-    /**
-     * @brief Received I2c message struct to store message for slave
-     * 
-     */
-    struct ReceivedI2cMessage
-    {
-        static String event;
-        static String information;
-    };
-
-    /**
-     * @brief Write I2c message struct to store answer message for slave
-     * 
-     */
-    struct WriteI2cMessage
-    {
-        static String event;
-        static struct Package packageInformation;
-        static String state;
-        static String position;
-    };
-    
-    #endif
 
     /**
      * @brief Construct a new I2cCommunication object
@@ -116,16 +69,16 @@ class I2cCommunication
     #ifdef MASTER
 
     /**
-     * @brief I2c write function to write message to slave
+     * @brief Write function to write message to slave
      * 
      */
-    void i2cWriteMessage();
+    void writeMessage(WriteI2cMessage &message);
 
     /**
-     * @brief I2c read function to read message from slave
+     * @brief Read function to read message from slave
      * 
      */
-    void i2cReadMessage();
+    ReceivedI2cMessage readMessage();
     
     /**
      * @brief Get the Received Information object
@@ -146,7 +99,7 @@ class I2cCommunication
      * 
      * @param s - String
      */
-    void setWriteState(String s)
+    void setWriteState(String s);
 
     /**
      * @brief Set the Write Position object
@@ -162,14 +115,14 @@ class I2cCommunication
      * @brief I2c request callback function to request on call from master
      * 
      */
-    static void i2cRequestCallback();
+    static void RequestCallback();
     
     /**
      * @brief I2c read callback function to read message from master
      * 
      * @param bytes - int
      */
-    static void i2cReadCallback(int bytes);
+    static void ReadCallback(int bytes);
 
     /**
      * @brief Get the Received State object
@@ -200,7 +153,6 @@ class I2cCommunication
     void setWriteInformation(String s);
     #endif
 
-    
     /**
      * @brief Reset function to reset all received message
      * 
@@ -215,9 +167,9 @@ class I2cCommunication
 
     private:
 
-    static WriteI2cMessage pWriteMessage;           ///< private instance of write i2c message struct
-    static ReceivedI2cMessage pReceivedMessage;     ///< private instance of received i2c message struct
-    static bool READFLAG_I2C;                       ///< readflag for i2c messages
+    static WriteI2cMessage pWriteMessage;               ///< private instance of write i2c message struct
+    static ReceivedI2cMessage pReceivedMessage[2];      ///< private instance of received i2c message struct
+    static bool READFLAG_I2C;                           ///< readflag for i2c messages
 };
 
 #endif
