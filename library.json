@@ -1,11 +1,11 @@
 {
-    "name": "MQTTCommunication",
-    "keywords": "MQTT, web, communication",
-    "description": "MQTT communication for Sortic",
+    "name": "I2cCommunication",
+    "keywords": "I2c, Wire, communication",
+    "description": "I2c communication from sortic to sortic communication hub",
     "homepage": null,
     "repository": {
         "type": "git",
-        "url": "https://github.com/philipzellweger/SmartFactory_MQTTCommunication.git"
+        "url": "https://github.com/philipzellweger/SmartFactory_I2cCommunication"
     },
     "version": "2.0.0",
     "authors": {
