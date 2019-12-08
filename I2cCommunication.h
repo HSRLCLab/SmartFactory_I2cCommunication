@@ -12,15 +12,15 @@
 #define I2CCOMMUNICAITON_H__
 
 #include <Arduino.h>
+#include <string.h>
 #include <Wire.h>
 
 // own files:
 #include "LogConfiguration.h"
 #include "MainConfiguration.h"
-#include "Message.h"
+#include "MessageTranslation.h"
 
 #define MASTER
-
 
 /**
  * @brief Class to communicate with I2c
@@ -49,21 +49,21 @@ class I2cCommunication
      * @return true 
      * @return false 
      */
-    bool getReadFlag_I2c();
+    //bool getReadFlag_I2c();
 
     /**
      * @brief Set the Write Event object
      * 
      * @param s - String
      */
-    void setWriteEvent(String s);
+    //void setWriteEvent(String s);
 
     /**
      * @brief Set the ReadFlag I2c object
      * 
      * @param flag - bool
      */
-    void setReadFlag_I2c(bool flag);
+    //void setReadFlag_I2c(bool flag);
 
     // Functions for Master
     #ifdef MASTER
@@ -157,19 +157,39 @@ class I2cCommunication
      * @brief Reset function to reset all received message
      * 
      */
-    void resetReceivedMessages();
+    void resetReceivedMessage();
     
     /**
      * @brief Reset function to reset I2c write message
      * 
      */
-    void resetWriteMessages();
+    void resetWriteMessage();
+
+    #ifdef MASTER
+    /**
+     * @brief Set the Write Message object
+     * 
+     * @param event 
+     * @param information 
+     */
+    void setWriteMessage(char *event, char *information);
+    #else
+    /**
+     * @brief Set the Write Message object
+     * 
+     * @param event 
+     * @param state 
+     * @param position 
+     * @param packageId 
+     * @param cargo 
+     * @param targetDest 
+     * @param error 
+     * @param token 
+     */
+    void setWriteMessage(char *event, char *state, int position, unsigned int packageId, char *cargo, char *targetDest, bool error, bool token);
+    #endif
 
     private:
-
-    static WriteI2cMessage pWriteMessage;               ///< private instance of write i2c message struct
-    static ReceivedI2cMessage pReceivedMessage[2];      ///< private instance of received i2c message struct
-    static bool READFLAG_I2C;                           ///< readflag for i2c messages
 };
 
 #endif

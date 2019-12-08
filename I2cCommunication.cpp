@@ -13,22 +13,22 @@
 
 I2cCommunication::I2cCommunication() 
 {
-    #ifdef MASTER
+#ifdef MASTER
     Wire.begin();
-    #else
-    Wire.begin(I2CSLAVEADDRESSESP);
-    Wire.onRequest(i2cRequestCallback);
-    Wire.onReceive(i2cReadCallback);
-    #endif
+#else
+    Wire.begin(I2CSLAVEADDRESP);
+    Wire.onRequest(RequestCallback);
+    Wire.onReceive(ReadCallback);
+#endif
 }
 
-/*
+
 String I2cCommunication::getReceivedEvent()
 {
     DBFUNCCALLln("I2cCommunication::getReceivedEvent()");
-    return (pReceivedMessage.event);
+    return (pReceivedI2cMessage->event);
 }
-
+/*
 bool I2cCommunication::getReadFlag_I2c()
 {
     DBFUNCCALLln("I2cCommunication::getReadFlag_I2c()");
@@ -98,51 +98,74 @@ void I2cCommunication::setWriteInformation(String s)
 
 void I2cCommunication::ReadCallback(int bytes)
 {
-    DBFUNCCALLln("receiveEvent()");
-    READFLAG_I2C = true;
-    //readData();
+    DBFUNCCALLln("I2cCommunication::ReadCallback(int bytes)");
     while (0 < Wire.available())
     {
-        Wire.readBytes( (char*) &pReceivedMessage, sizeof(ReceivedI2cMessage));
+        Wire.readBytes( (char*) pReceivedI2cMessage, sizeof(pReceivedI2cMessage));
     }
 }
 
 void I2cCommunication::RequestCallback()
 {
-    DBFUNCCALLln("I2cCommunication::i2cRequestCallback()");
-    Wire.write((char*) &pWriteMessage, sizeof(WriteI2cMessage);
+    DBFUNCCALLln("I2cCommunication::RequestCallback()");
+    Wire.write((char*) &pWriteI2cMessage);
 }
 #endif
 
-void I2cCommunication::resetReceivedMessages()
+void I2cCommunication::resetReceivedMessage()
 {
     DBFUNCCALLln("I2cCommunication::resetMessages()");
-    pReceivedI2cMessage[0].event = "null";
+    strcpy(pReceivedI2cMessage->event,"null");
+    
     #ifdef MASTER
-    pReceivedI2cMessage[0].state = "null";
-    pReceivedI2cMessage[0].position = -1;
-    pReceivedI2cMessage[0].packageId = 0;
-    pReceivedI2cMessage[0].cargo = "null";
-    pReceivedI2cMessage[0].targetDest = "null";
+    strcpy(pReceivedI2cMessage->state, "null");
+    pReceivedI2cMessage->position = -1;
+    pReceivedI2cMessage->packageId = 0;
+    strcpy(pReceivedI2cMessage->cargo, "null");
+    strcpy(pReceivedI2cMessage->targetDest, "null");
+
     #else
-    pReceivedI2cMessage[0].information = "null";
+    strcpy(pReceivedI2cMessage->information, "null");
     #endif
 }
 
-/*
-void I2cCommunication::resetWriteMessages()
+void I2cCommunication::resetWriteMessage()
 {
     DBFUNCCALLln("I2cCommunication::resetWriteMessages()");
-    pWriteMessage.event = "null";
+    strcpy(pWriteI2cMessage->event, "null");
     #ifdef MASTER
-    pReceivedMessage.state = "null";
-    pReceivedMessage.position = "null";
-    pReceivedMessage.packageInformation.id = "null";
-    pReceivedMessage.packageInformation.cargo = "null";
-    pReceivedMessage.packageInformation.targetDest = "null";
-    pReceivedMessage.packageInformation.targetReg = "null";
+    strcpy(pWriteI2cMessage->information, "null");
     #else
-    pWriteMessage.information = "null";
+    strcpy(pWriteI2cMessage->state, "null");
+    pWriteI2cMessage->position = -1;
+    pWriteI2cMessage->packageId = 0;
+    strcpy(pWriteI2cMessage->cargo, "null");
+    strcpy(pWriteI2cMessage->targetDest, "null");
+    pWriteI2cMessage->error = false;
+    pWriteI2cMessage->token = false;
     #endif
 }
-*/
+
+#ifdef MASTER
+void I2cCommunication::setWriteMessage(char *event, char *information)
+{
+    DBFUNCCALLln("I2cCommunication::setWriteMessage()");
+    strcpy(pWriteI2cMessage->event, "null");
+    strcpy(pWriteI2cMessage->information, "null");
+}
+#else
+void I2cCommunication::setWriteMessage(char *event, char *state, int position, unsigned int packageId, char *cargo, char *targetDest, bool error, bool token)
+{
+    DBFUNCCALLln("I2cCommunication::setWriteMessage()");
+    strcpy(pWriteI2cMessage->event, event);
+    strcpy(pWriteI2cMessage->state, state);
+    pWriteI2cMessage->position = position;
+    pWriteI2cMessage->packageId = packageId;
+    strcpy(pWriteI2cMessage->cargo, cargo);
+    strcpy(pWriteI2cMessage->targetDest, targetDest);
+    pWriteI2cMessage->error = error;
+    pWriteI2cMessage->token = token;
+}
+#endif
+
+
