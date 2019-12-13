@@ -26,7 +26,7 @@ I2cCommunication::I2cCommunication()
 String I2cCommunication::getReceivedEvent()
 {
     DBFUNCCALLln("I2cCommunication::getReceivedEvent()");
-    return (pReceivedI2cMessage->event);
+    return (pReceivedI2cMessage.event);
 }
 /*
 bool I2cCommunication::getReadFlag_I2c()
@@ -115,17 +115,17 @@ void I2cCommunication::RequestCallback()
 void I2cCommunication::resetReceivedMessage()
 {
     DBFUNCCALLln("I2cCommunication::resetMessages()");
-    strcpy(pReceivedI2cMessage->event,"null");
+    strcpy(pReceivedI2cMessage.event,"null");
     
     #ifdef MASTER
-    strcpy(pReceivedI2cMessage->state, "null");
-    pReceivedI2cMessage->position = -1;
-    pReceivedI2cMessage->packageId = 0;
-    strcpy(pReceivedI2cMessage->cargo, "null");
-    strcpy(pReceivedI2cMessage->targetDest, "null");
+    strcpy(pReceivedI2cMessage.state, "null");
+    pReceivedI2cMessage.position = -1;
+    pReceivedI2cMessage.packageId = 0;
+    strcpy(pReceivedI2cMessage.cargo, "null");
+    strcpy(pReceivedI2cMessage.targetDest, "null");
 
     #else
-    strcpy(pReceivedI2cMessage->information, "null");
+    strcpy(pReceivedI2cMessage.information, "null");
     #endif
 }
 

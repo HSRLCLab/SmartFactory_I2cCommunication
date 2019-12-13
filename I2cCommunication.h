@@ -10,6 +10,73 @@
  */
 #ifndef I2CCOMMUNICAITON_H__
 #define I2CCOMMUNICAITON_H__
+/**
+ * @file I2cCommunication.cpp
+ * @author Philip Zellweger (philip.zellweger@hsr.ch)
+ * @brief I2c communication library for master and slave
+ * @version 0.1
+ * @date 2019-11-25
+ * 
+ * @copyright Copyright (c) 2019
+ * 
+ */
+#include "I2cCommunication.h"
+
+
+I2cCommunication::I2cCommunication(void *ReceivedMessage, void *WriteMessage, size_t writeCapacitiy, size_t readCapicity) : 
+                                                            pRecievedMessage(ReceivedMessage), 
+                                                            pWriteMessage(WriteMessage),
+                                                            pWriteCapacity(writeCapacitiy),
+                                                            pReadCapicity(readCapicity)
+{
+#ifdef MASTER
+    Wire.begin();
+#else
+    Wire.begin(I2CSLAVEADDRESP);
+    Wire.onRequest(RequestCallback);
+    Wire.onReceive(ReadCallback);
+#endif
+}
+
+#ifdef MASTER
+void I2cCommunication::writeMessage()
+{
+    DBFUNCCALLln("I2cCommunication::writeMessage()");
+    Wire.beginTransmission(I2CSLAVEADDRESP);
+    Wire.write((uint8_t *) pWriteMessage, (size_t)pWriteCapacity);
+    Wire.endTransmission();
+    delay(50);
+}
+
+void I2cCommunication::readMessage()
+{
+    DBFUNCCALLln("I2cCommunication::readMessage()");
+    Wire.requestFrom(I2CSLAVEADDRESP, (int)pReadCapicity);
+    while(Wire.available() < (int)pReadCapicity)
+    {
+        delay(5);
+    }
+    Wire.readBytes((char *) pRecievedMessage, pReadCapicity);
+}
+
+
+#else
+
+void I2cCommunication::ReadCallback(int bytes)
+{
+    DBFUNCCALLln("I2cCommunication::ReadCallback(int bytes)");
+    while (0 < Wire.available())
+    {
+        Wire.readBytes( (char*) pReceivedMessage, pReadCapacity);
+    }
+}
+
+void I2cCommunication::RequestCallback()
+{
+    DBFUNCCALLln("I2cCommunication::RequestCallback()");
+    Wire.write((char*) pWriteMessage);
+}
+#endif
 
 #include <Arduino.h>
 #include <string.h>
@@ -33,37 +100,12 @@ class I2cCommunication
     /**
      * @brief Construct a new I2cCommunication object
      * 
+     * @param ReceivedMessage 
+     * @param WriteMessage 
      */
-    I2cCommunication();
+    I2cCommunication(void *ReceivedMessage, void *WriteMessage, size_t writeCapacitiy, size_t readCapicity);
 
-    /**
-     * @brief Get the Received Event object
-     * 
-     * @return String 
-     */
-    String getReceivedEvent();
-
-    /**
-     * @brief Get the ReadFlag I2c object
-     * 
-     * @return true 
-     * @return false 
-     */
-    //bool getReadFlag_I2c();
-
-    /**
-     * @brief Set the Write Event object
-     * 
-     * @param s - String
-     */
-    //void setWriteEvent(String s);
-
-    /**
-     * @brief Set the ReadFlag I2c object
-     * 
-     * @param flag - bool
-     */
-    //void setReadFlag_I2c(bool flag);
+    
 
     // Functions for Master
     #ifdef MASTER
@@ -72,43 +114,14 @@ class I2cCommunication
      * @brief Write function to write message to slave
      * 
      */
-    void writeMessage(WriteI2cMessage &message);
+    void writeMessage();
 
     /**
      * @brief Read function to read message from slave
      * 
      */
-    ReceivedI2cMessage readMessage();
+    void readMessage();
     
-    /**
-     * @brief Get the Received Information object
-     * 
-     * @return String 
-     */
-    String getReceivedInformation();
-
-    /**
-     * @brief Set the Write Package Information object
-     * 
-     * @param p - PackageMessage
-     */
-    void setWritePackageInformation(PackageMessage p);
-
-    /**
-     * @brief Set the Write State object
-     * 
-     * @param s - String
-     */
-    void setWriteState(String s);
-
-    /**
-     * @brief Set the Write Position object
-     * 
-     * @param pos - String
-     */
-    void setWritePosition(String pos);
-
-    // Functions for Slave
     #else
     
     /**
@@ -124,72 +137,17 @@ class I2cCommunication
      */
     static void ReadCallback(int bytes);
 
-    /**
-     * @brief Get the Received State object
-     * 
-     * @return String 
-     */
-    String getReceivedState();
-
-    /**
-     * @brief Get the Received Position object
-     * 
-     * @return String 
-     */
-    String getReceivedPosition();
-
-    /**
-     * @brief Get the Received Package Information object
-     * 
-     * @return PackageMessage 
-     */
-    PackageMessage getReceivedPackageInformation();
-
-    /**
-     * @brief Set the Write Information object
-     * 
-     * @param s - String
-     */
-    void setWriteInformation(String s);
-    #endif
-
-    /**
-     * @brief Reset function to reset all received message
-     * 
-     */
-    void resetReceivedMessage();
-    
-    /**
-     * @brief Reset function to reset I2c write message
-     * 
-     */
-    void resetWriteMessage();
-
-    #ifdef MASTER
-    /**
-     * @brief Set the Write Message object
-     * 
-     * @param event 
-     * @param information 
-     */
-    void setWriteMessage(char *event, char *information);
-    #else
-    /**
-     * @brief Set the Write Message object
-     * 
-     * @param event 
-     * @param state 
-     * @param position 
-     * @param packageId 
-     * @param cargo 
-     * @param targetDest 
-     * @param error 
-     * @param token 
-     */
-    void setWriteMessage(char *event, char *state, int position, unsigned int packageId, char *cargo, char *targetDest, bool error, bool token);
     #endif
 
     private:
+
+    void *pRecievedMessage = nullptr;
+    void *pWriteMessage = nullptr;
+
+    size_t pWriteCapacity;
+    size_t pReadCapicity;
+
+
 };
 
 #endif
