@@ -11,27 +11,21 @@
 #include "I2cCommunication.h"
 
 
-I2cCommunication::I2cCommunication(void *ReceivedMessage, void *WriteMessage, size_t writeCapacitiy, size_t readCapicity) : 
-                                                            pRecievedMessage(ReceivedMessage), 
-                                                            pWriteMessage(WriteMessage),
-                                                            pWriteCapacity(writeCapacitiy),
-                                                            pReadCapicity(readCapicity)
-{
 #ifdef MASTER
-    Wire.begin();
-#else
-    Wire.begin(I2CSLAVEADDRESP);
-    Wire.onRequest(RequestCallback);
-    Wire.onReceive(ReadCallback);
-#endif
+I2cCommunication::I2cCommunication(int adress,ReceivedI2cMessage *receivedMessage, WriteI2cMessage *writeMessage) : 
+                                            pReceivedMessage(receivedMessage),
+                                            pWriteMessage(writeMessage),
+                                            pAdress(adress)
+{
+    DBFUNCCALLln("I2cCommunication::I2cCommunication(int, ReceivedI2cMessage, WriteI2cMessage, size_t, size_t)");
+    Wire.begin(21,22,16000000); // change!
 }
 
-#ifdef MASTER
 void I2cCommunication::writeMessage()
 {
     DBFUNCCALLln("I2cCommunication::writeMessage()");
-    Wire.beginTransmission(I2CSLAVEADDRESP);
-    Wire.write((uint8_t *) pWriteMessage, (size_t)pWriteCapacity);
+    Wire.beginTransmission(pAdress);
+    Wire.write((uint8_t *) pWriteMessage, sizeof(WriteI2cMessage));
     Wire.endTransmission();
     delay(50);
 }
@@ -39,29 +33,68 @@ void I2cCommunication::writeMessage()
 void I2cCommunication::readMessage()
 {
     DBFUNCCALLln("I2cCommunication::readMessage()");
-    Wire.requestFrom(I2CSLAVEADDRESP, (int)pReadCapicity);
-    while(Wire.available() < (int)pReadCapicity)
+    Wire.requestFrom(pAdress, sizeof(ReceivedI2cMessage));
+    
+    // TEST
+    // Serial.println(" request sended ");
+    // TEST
+
+    unsigned long currentMillis = millis();
+    unsigned long previousMillis = currentMillis;
+    while(Wire.available() < sizeof(ReceivedI2cMessage))
     {
+        DBINFO2ln(" Wait till data available ");
         delay(5);
+        currentMillis = millis();
+        // TEST
+        // Serial.print("Time: ");
+        // Serial.println((currentMillis - previousMillis));
+        // TEST
+        if ((currentMillis - previousMillis) > 50)
+        {
+            // Throw exception here!
+                // TODO
+            DBERROR("Request failed");
+            return;
+        }
     }
-    Wire.readBytes((char *) pRecievedMessage, pReadCapicity);
+
+    // TEST
+    //Serial.println(" copy data ");
+    
+    Wire.readBytes((char *) pReceivedMessage, sizeof(ReceivedI2cMessage));
+
+    //TEST
+    /*
+    //Serial.println(" copy data finish ");
+    
+    for (int i = 0; i < 12; i++)
+    {
+        Serial.print(pReceivedMessage->event[i]);
+    }
+    Serial.println();
+    Serial.println(pReceivedMessage->packageId);
+    Serial.println(pReceivedMessage->targetDest);
+    Serial.println(pReceivedMessage->position);
+    Serial.println(pReceivedMessage->state);
+    Serial.println(pReceivedMessage->error);
+    Serial.println(pReceivedMessage->token);
+    */
+    // TEST
+    
 }
-
-
 #else
 
-void I2cCommunication::ReadCallback(int bytes)
+I2cCommunication::I2cCommunication(int adress, void (*receiveCallback)(int bytes), void (*requestCallback)()) : 
+                                                            receiveCallbackFuncPointer(receiveCallback), 
+                                                            requestCallbackFuncPointer(requestCallback),
+                                                            pAdress(adress)
 {
-    DBFUNCCALLln("I2cCommunication::ReadCallback(int bytes)");
-    while (0 < Wire.available())
-    {
-        Wire.readBytes( (char*) pReceivedMessage, pReadCapacity);
-    }
-}
-
-void I2cCommunication::RequestCallback()
-{
-    DBFUNCCALLln("I2cCommunication::RequestCallback()");
-    Wire.write((char*) pWriteMessage);
+    DBFUNCCALLln("I2cCommunication::I2cCommunication(int adress)");
+    Wire.begin(7);
+    Wire.onRequest(requestCallbackFuncPointer);
+    Wire.onReceive(receiveCallbackFuncPointer);
 }
 #endif
+
+
