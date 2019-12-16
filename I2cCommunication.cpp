@@ -17,7 +17,7 @@ I2cCommunication::I2cCommunication(int adress,ReceivedI2cMessage *receivedMessag
                                             pWriteMessage(writeMessage),
                                             pAdress(adress)
 {
-    DBFUNCCALLln("I2cCommunication::I2cCommunication(int, ReceivedI2cMessage, WriteI2cMessage, size_t, size_t)");
+    DBFUNCCALLln("I2cCommunication::I2cCommunication(int, ReceivedI2cMessage*, WriteI2cMessage*)");
     Wire.begin(21,22,16000000); // change!
 }
 
@@ -90,8 +90,8 @@ I2cCommunication::I2cCommunication(int adress, void (*receiveCallback)(int bytes
                                                             requestCallbackFuncPointer(requestCallback),
                                                             pAdress(adress)
 {
-    DBFUNCCALLln("I2cCommunication::I2cCommunication(int adress)");
-    Wire.begin(7);
+    DBFUNCCALLln("I2cCommunication::I2cCommunication(int, void (*)(int), void (*)(void))");
+    Wire.begin(pAdress);
     Wire.onRequest(requestCallbackFuncPointer);
     Wire.onReceive(receiveCallbackFuncPointer);
 }

@@ -18,7 +18,8 @@
 // own files:
 #include "LogConfiguration.h"
 
-#define MASTER
+// UNCOMMIT IF SLAVE
+#define MASTER 
 
 #ifdef MASTER
 
@@ -90,7 +91,7 @@ struct WriteI2cMessage
 #endif
 
 /**
- * @brief Class to communicate with I2c
+ * @brief Class to communicate with I2C
  * 
  */
 class I2cCommunication
@@ -120,9 +121,8 @@ class I2cCommunication
      */
     void readMessage();
 
-    ReceivedI2cMessage *pReceivedMessage = nullptr;
-
-    WriteI2cMessage *pWriteMessage = nullptr;
+    ReceivedI2cMessage *pReceivedMessage = nullptr;         ///< pointer to instance of ReceivedI2cMessage struct
+    WriteI2cMessage *pWriteMessage = nullptr;               ///< pointer to instance of WriteI2cMessage struct
 
 
     #else
@@ -133,14 +133,22 @@ class I2cCommunication
      */
     I2cCommunication(int adress, void (*receiveCallback)(int bytes), void (*requestCallback)());
     
-    void (*receiveCallbackFuncPointer)(int bytes) = nullptr;  ///< functionpointer to callback-function
+    /**
+     * @brief functionpointer to callbackfunction to receive messages
+     * 
+     */
+    void (*receiveCallbackFuncPointer)(int bytes) = nullptr;
 
-    void (*requestCallbackFuncPointer)() = nullptr;  ///< functionpointer to callback-function
+    /**
+     * @brief functionpointer to callbackcuntion to request messages
+     * 
+     */
+    void (*requestCallbackFuncPointer)() = nullptr;
     #endif
 
     private:
 
-    int pAdress;
+    int pAdress;        // Adress of device
 
     
 
