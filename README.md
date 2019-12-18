@@ -17,6 +17,10 @@ In the SmartFactory project, data is exchanged between the SorticRobot and the S
    - Dependency Graph
    - Collaboration Diagram
 - ToDo's
+- Contributors
+- Changelog
+- License
+- Links to SmartFactory
 
 ## Tools and technologies
 
