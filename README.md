@@ -59,7 +59,9 @@ The i2c interface was implemented by preprocessor instructions for the connectio
 
 #### UML
 
-The figure below shows the data model in UML notation. 
+The figure below shows the data model in UML notation. The following libraries were used:
+   - Wire.h
+   - string.h
 
 ================== IMAGE ===============================
 
