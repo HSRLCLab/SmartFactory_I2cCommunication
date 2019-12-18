@@ -51,8 +51,11 @@ A logic level converter is used to convert the different voltages of the binary 
 #### I2C
 
 The i2c interface was implemented by preprocessor instructions for the connection as master or slave in the same interface. By uncommenting "#define MASTER" the slave version can be used.
+```
+// UNCOMMIT IF SLAVE
 
-=========== CODE ======================================
+#define MASTER 
+```
 
 #### UML
 
