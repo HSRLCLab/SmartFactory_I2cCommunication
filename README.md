@@ -6,8 +6,16 @@ In the SmartFactory project, data is exchanged between the SorticRobot and the S
 ## Table of contents
 
 - Tools and technologies
--- Visual Studi Code
+   - Visual Studi Code
+   - Doxygen
+   - I2C
+- Hardware
+   - Logic Level converter
 - Software
+   - I2C
+   - UML
+   - Dependency Graph
+   - Collaboration Diagram
 - ToDo's
 
 ## Tools and technologies
@@ -67,6 +75,6 @@ The figure below shows the collaboration tree of the I2cCommunication interface.
 
 =================== IMAGE ==========================================
 
-## ToDo
+## ToDo's
 - [ ]
 - [ ]
