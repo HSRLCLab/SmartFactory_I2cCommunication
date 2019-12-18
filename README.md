@@ -6,6 +6,7 @@ In the SmartFactory project, data is exchanged between the SorticRobot and the S
 ## Table of contents
 
 - Tools and technologies
+-- Visual Studi Code
 - Software
 - ToDo's
 
