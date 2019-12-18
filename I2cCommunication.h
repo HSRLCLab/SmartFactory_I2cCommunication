@@ -24,7 +24,7 @@
 #ifdef MASTER
 
 /**
-*  Received I2c message struct to store message for master
+*  Received I2c message struct to store receive message for master
 * 
 */
 #pragma pack(1)
@@ -57,7 +57,7 @@ struct WriteI2cMessage
 
 #else
 /**
-*  Received I2c message struct to store message for slave
+*  Received I2c message struct to store receive message for slave
 * 
 */
 #pragma pack(1)
