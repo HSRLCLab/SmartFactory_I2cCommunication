@@ -59,15 +59,15 @@ The i2c interface was implemented by preprocessor instructions for the connectio
 
 #### UML
 
-The figure below shows the data model in UML notation. The following libraries were used:
-   - Wire.h
-   - string.h
+The figure below shows the data model in UML notation. 
 
 ================== IMAGE ===============================
 
 #### Dependency Graph
 
-The figure below shows the dependency tree of the I2cCommunication interface.
+The figure below shows the dependency tree of the I2cCommunication interface. The following libraries were used:
+   - Wire.h
+   - string.h
 
 
  ==================== IMAGE ==================================
