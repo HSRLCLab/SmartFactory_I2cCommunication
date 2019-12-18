@@ -3,6 +3,8 @@
 The i2c interface is a serial data bus to connect low speed devices. The data is transmitted via two cables, one being the clock line and the other being the data line. The i2c interface is based on the master-slave principle, whereby the master can push and pull messages to the slave. It is also possible to have more than one master in a system. The slave is identified by its address, with a microcontroller as slave the address can be freely selected, as long as no other slave has the address. 
 In the SmartFactory project, data is exchanged between the SorticRobot and the SorticRobot CommunicationHub via the i2c interface. In the principle of a template, predefined structs are sent and received byte by byte. This enables a simple data exchange between the two closely linked systems. The i2c interface can also be used to read sensors if desired.
 
+![alt text](http://url/to/img.png)
+
 ## Table of contents
 
 - Tools and technologies
