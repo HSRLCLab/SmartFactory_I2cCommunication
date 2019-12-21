@@ -1,0 +1,5 @@
+<map id="I2cCommunication" name="I2cCommunication">
+<area shape="rect" id="node1" title="Class to communicate with I2C." alt="" coords="71,233,220,340"/>
+<area shape="rect" id="node2" href="$struct_write_i2c_message.html" title=" " alt="" coords="5,42,128,134"/>
+<area shape="rect" id="node3" href="$struct_received_i2c_message.html" title=" " alt="" coords="152,5,296,171"/>
+</map>
