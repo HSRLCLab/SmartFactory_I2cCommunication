@@ -5,22 +5,22 @@ In the SmartFactory project, data is exchanged between the SorticRobot and the S
 
 ## Table of contents
 
-- Tools and technologies
-   - Visual Studi Code
-   - Doxygen
-   - I2C
-- Hardware
-   - Logic Level converter
-- Software
-   - I2C
-   - UML
-   - Dependency Graph
-   - Collaboration Diagram
-- ToDo's
-- Contributors
-- Changelog
-- License
-- Links to SmartFactory
+- [Tools and technologies](#tools-and-technologies)
+   - [Visual Studi Code](#visual-studio-code)
+   - [Doxygen](#doxygen)
+   - [I2C](#i2c)
+- [Hardware](#hardware)
+   - [Logic Level converter](#logic-level-converter)
+- [Software](#software)
+   - [I2C](#i2c)
+   - [UML](#uml)
+   - [Dependency Graph](#dependency-graph)
+   - [Includes](#includes)
+- [ToDo's](#todo's)
+- [Contributors](#contributors)
+- [Changelog](#changelog)
+- [License](#license)
+- [Links to SmartFactory](#links-to-smartfactory)
 
 ## Tools and technologies
 
