@@ -63,24 +63,12 @@ The i2c interface was implemented with preprocessor instructions for handling as
 
 The figure below shows the data model in UML notation. 
 
-================== IMAGE ===============================
-
-#### Dependency Graph
-
-The figure below shows the dependency tree of the I2cCommunication interface. The following libraries were used:
-   - Wire.h
-   - string.h
-
-
- ==================== IMAGE ==================================
- 
- 
- 
-#### Collaboration Diagram
-
-The figure below shows the collaboration tree of the I2cCommunication interface. The arrow simbolizes an instanced object.
-
-=================== IMAGE ==========================================
+<p align="center">
+    <a href=https://github.com/philipzellweger/SmartFactory_I2cCommunication/blob/master/docs/html/class_i2c_communication.html>
+        <img src="https://github.com/philipzellweger/SmartFactory_I2cCommunication/blob/master/docs/html/class_i2c_communication__coll__graph.png" style="border:none;"/>
+    </a>
+    <p align="center"><small>Click on the image to open doxygen-documentation.</p>
+</p>
 
 ## ToDo's
 - [ ]
