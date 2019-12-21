@@ -70,6 +70,17 @@ The figure below shows the data model in UML notation.
     <p align="center"><small>Click on the image to open doxygen-documentation.</p>
 </p>
 
+#### Includes
+
+The figure below shows the include graph
+
+<p align="center">
+    <a href=https://github.com/philipzellweger/SmartFactory_I2cCommunication/blob/master/docs/html/_i2c_communication_8h.html>
+        <img src="https://github.com/philipzellweger/SmartFactory_I2cCommunication/blob/master/docs/html/_i2c_communication_8h__incl.png" style="border:none;"/>
+    </a>
+    <p align="center"><small>Click on the image to open doxygen-documentation.</p>
+</p>
+
 ## ToDo's
 - [ ]
 - [ ]
