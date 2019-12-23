@@ -5,22 +5,22 @@ In the SmartFactory project, data is exchanged between the SorticRobot and the S
 
 ## Table of contents
 
-- Tools and technologies
-   - Visual Studi Code
-   - Doxygen
-   - I2C
-- Hardware
-   - Logic Level converter
-- Software
-   - I2C
-   - UML
-   - Dependency Graph
-   - Collaboration Diagram
-- ToDo's
-- Contributors
-- Changelog
-- License
-- Links to SmartFactory
+- [Tools and technologies](#tools-and-technologies)
+   - [Visual Studi Code](#visual-studio-code)
+   - [Doxygen](#doxygen)
+   - [I2C](#i2c)
+- [Hardware](#hardware)
+   - [Logic Level converter](#logic-level-converter)
+- [Software](#software)
+   - [I2C](#i2c)
+   - [UML](#uml)
+   - [Dependency Graph](#dependency-graph)
+   - [Includes](#includes)
+- [ToDo's](#todo's)
+- [Contributors](#contributors)
+- [Changelog](#changelog)
+- [License](#license)
+- [Links to SmartFactory](#links-to-smartfactory)
 
 ## Tools and technologies
 
@@ -63,28 +63,27 @@ The i2c interface was implemented with preprocessor instructions for handling as
 
 The figure below shows the data model in UML notation. 
 
-================== IMAGE ===============================
+<p align="center">
+    <a href=https://philipzellweger.github.io/SmartFactory_I2cCommunication/class_i2c_communication.html>
+        <img src="https://github.com/philipzellweger/SmartFactory_I2cCommunication/blob/master/docs/html/class_i2c_communication__coll__graph.png" style="border:none;"/>
+    </a>
+    <p align="center"><small>Click on the image to open doxygen-documentation.</p>
+</p>
 
-#### Dependency Graph
+#### Includes
 
-The figure below shows the dependency tree of the I2cCommunication interface. The following libraries were used:
-   - Wire.h
-   - string.h
+The figure below shows the include graph
 
-
- ==================== IMAGE ==================================
- 
- 
- 
-#### Collaboration Diagram
-
-The figure below shows the collaboration tree of the I2cCommunication interface. The arrow simbolizes an instanced object.
-
-=================== IMAGE ==========================================
+<p align="center">
+    <a href=https://philipzellweger.github.io/SmartFactory_I2cCommunication/i2c_communication_8h.html>
+        <img src="https://github.com/philipzellweger/SmartFactory_I2cCommunication/blob/master/docs/html/_i2c_communication_8h__incl.png" style="border:none;"/>
+    </a>
+    <p align="center"><small>Click on the image to open doxygen-documentation.</p>
+</p>
 
 ## ToDo's
-- [ ]
-- [ ]
+
+All the ToDo's are documented in the source code with Doxygen.
 
 # Contributors
 - [Philip Zellweger](https://github.com/philipzellweger)
