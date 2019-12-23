@@ -64,7 +64,7 @@ The i2c interface was implemented with preprocessor instructions for handling as
 The figure below shows the data model in UML notation. 
 
 <p align="center">
-    <a href=https://github.com/philipzellweger/SmartFactory_I2cCommunication/blob/master/docs/html/class_i2c_communication.html>
+    <a href=https://philipzellweger.github.io/SmartFactory_I2cCommunication/class_i2c_communication.html>
         <img src="https://github.com/philipzellweger/SmartFactory_I2cCommunication/blob/master/docs/html/class_i2c_communication__coll__graph.png" style="border:none;"/>
     </a>
     <p align="center"><small>Click on the image to open doxygen-documentation.</p>
@@ -75,7 +75,7 @@ The figure below shows the data model in UML notation.
 The figure below shows the include graph
 
 <p align="center">
-    <a href=https://github.com/philipzellweger/SmartFactory_I2cCommunication/blob/master/docs/html/_i2c_communication_8h.html>
+    <a href=https://philipzellweger.github.io/SmartFactory_I2cCommunication/i2c_communication_8h.html>
         <img src="https://github.com/philipzellweger/SmartFactory_I2cCommunication/blob/master/docs/html/_i2c_communication_8h__incl.png" style="border:none;"/>
     </a>
     <p align="center"><small>Click on the image to open doxygen-documentation.</p>
